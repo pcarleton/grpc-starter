@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/nmrshll/oauth2-noserver"
-	pb "github.com/pcarleton/cashcoach/grpc/proto/api"
+	pb "github.com/pcarleton/grpc-starter/proto/api"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"

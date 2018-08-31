@@ -4,8 +4,8 @@ import (
 	"log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	pb "github.com/pcarleton/cashcoach/grpc/proto/api"
-	cc_server "github.com/pcarleton/cashcoach/grpc/server"
+	pb "github.com/pcarleton/grpc-starter/proto/api"
+	server "github.com/pcarleton/grpc-starter/server"
 	"flag"
 	"net"
 	"golang.org/x/net/context"
@@ -90,7 +90,7 @@ func main() {
 	}
 
 	s := grpc.NewServer(grpc.Creds(creds), grpc.UnaryInterceptor(AuthInterceptor))
-	apiServer := cc_server.NewServer()
+	apiServer := server.NewServer()
 	pb.RegisterCashCoachApiServer(s, apiServer)
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
