@@ -1,0 +1,7 @@
+spec:
+  containers:
+    - name: ${instance_name}
+      image: gcr.io/${project}/${image_name}
+      stdin: false
+      tty: false
+  restartPolicy: Always

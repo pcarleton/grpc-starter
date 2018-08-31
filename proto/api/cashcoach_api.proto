@@ -1,0 +1,21 @@
+syntax = "proto3";
+package cashcoach_api;
+
+
+service CashCoachApi {
+  rpc GetHealth(GetHealthRequest) returns (GetHealthResponse) {}
+}
+
+message GetHealthRequest {
+}
+
+enum HealthStatus {
+  UNHEALTHY = 0;
+  OK = 1;
+}
+
+message GetHealthResponse {
+  HealthStatus status = 1;
+  // NEXT =  2
+}
+
