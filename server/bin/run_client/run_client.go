@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"io/ioutil"
 	"log"
+  "os"
 )
 
 var address string
@@ -41,7 +42,11 @@ type googleConfig struct {
 func main() {
 	flag.Parse()
 	//Set up a connection to the server.
-  secretsPath := os.Getenv("CLIENT_SECRETS_PATH")
+	secretsPath := os.Getenv("CLIENT_SECRETS_PATH")
+	if secretsPath == "" {
+		log.Fatalf("No client secrets specified under CLIENT_SECRETS_PATH")
+	}
+
 	b, err := ioutil.ReadFile(secretsPath)
 
 	if err != nil {
