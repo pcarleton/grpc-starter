@@ -8,7 +8,7 @@ import (
 type server struct {
 }
 
-func NewServer() (pb.CashCoachApiServer) {
+func NewServer() (pb.ApiServer) {
 	return &server{}
 }
 
