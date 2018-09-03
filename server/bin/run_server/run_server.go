@@ -80,32 +80,32 @@ func AuthInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServe
 }
 
 func main() {
-  flag.Parse()
+	flag.Parse()
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-  grpcOptions := []grpc.ServerOption{
-    grpc.UnaryInterceptor(AuthInterceptor),
-  }
+	grpcOptions := []grpc.ServerOption{
+		grpc.UnaryInterceptor(AuthInterceptor),
+	}
 
-  if insecure {
-    log.Printf("WARNING: Running without TLS")
-  } else {
-	  creds, err := credentials.NewServerTLSFromFile(cert, key)
-	  if err != nil {
-      panic(err)
-	  }
-    grpcOptions = append(grpcOptions, grpc.Creds(creds))
-  }
+	if insecure {
+		log.Printf("WARNING: Running without TLS")
+	} else {
+		creds, err := credentials.NewServerTLSFromFile(cert, key)
+		if err != nil {
+			panic(err)
+		}
+		grpcOptions = append(grpcOptions, grpc.Creds(creds))
+	}
 
 	s := grpc.NewServer(grpcOptions...)
 	apiServer := server.NewServer()
 	pb.RegisterApiServer(s, apiServer)
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
-  log.Printf("Starting server on %s", port)
+	log.Printf("Starting server on %s", port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

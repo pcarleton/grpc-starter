@@ -9,11 +9,11 @@ import (
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
 	"io/ioutil"
 	"log"
-  "os"
+	"os"
 )
 
 var address string
@@ -73,18 +73,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-  var conn *grpc.ClientConn
+	var conn *grpc.ClientConn
 
-  if insecure {
-	  conn, err = grpc.Dial(address, grpc.WithInsecure())
-  } else {
-	  creds, err := credentials.NewClientTLSFromFile(cert, "")
-	  if err != nil {
-      panic(err)
-	  }
+	if insecure {
+		conn, err = grpc.Dial(address, grpc.WithInsecure())
+	} else {
+		creds, err := credentials.NewClientTLSFromFile(cert, "")
+		if err != nil {
+			panic(err)
+		}
 
-	  conn, err = grpc.Dial(address, grpc.WithTransportCredentials(creds))
-  }
+		conn, err = grpc.Dial(address, grpc.WithTransportCredentials(creds))
+	}
 
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)

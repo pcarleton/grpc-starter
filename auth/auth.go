@@ -2,13 +2,13 @@ package auth
 
 import (
 	"crypto/rsa"
-	"encoding/json"
 	"encoding/gob"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
-  "time"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/sessions"
@@ -26,14 +26,14 @@ type Profile struct {
 
 const (
 	googleEndPoint = "https://www.googleapis.com/oauth2/v1/certs"
-	sessionName          = "default_session"
-	emailKey             = "email"
+	sessionName    = "default_session"
+	emailKey       = "email"
 )
 
 var googleCerts map[string]*rsa.PublicKey
 
 type SessionHandler struct {
-  store sessions.Store
+	store sessions.Store
 }
 
 func (s *SessionHandler) CreateSession(w http.ResponseWriter, r *http.Request, profile *Profile) error {
@@ -76,9 +76,8 @@ func CreateSessionHandler(cookieSecret string) (*SessionHandler, error) {
 		MaxAge: int((time.Hour * 3).Seconds()),
 	}
 
-  return &SessionHandler{sessionStore}, nil
+	return &SessionHandler{sessionStore}, nil
 }
-
 
 func getGoogleCerts() (map[string]*rsa.PublicKey, error) {
 	if googleCerts == nil {
@@ -141,7 +140,7 @@ func VerifyToken(tokenString string, certs map[string]*rsa.PublicKey) (*jwt.Toke
 }
 
 func VerifyGoogleJwt(tokenString string) (*jwt.Token, error) {
-  // TODO: Invalidate these certs periodically because they go stale
+	// TODO: Invalidate these certs periodically because they go stale
 	certs, err := getGoogleCerts()
 	if err != nil {
 		return nil, err
@@ -172,4 +171,3 @@ func ProfileFromJwt(token *jwt.Token) (*Profile, error) {
 	}, nil
 
 }
-

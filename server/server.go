@@ -8,14 +8,12 @@ import (
 type server struct {
 }
 
-func NewServer() (pb.ApiServer) {
+func NewServer() pb.ApiServer {
 	return &server{}
 }
-
 
 func (s *server) GetHealth(ctx context.Context, request *pb.GetHealthRequest) (*pb.GetHealthResponse, error) {
 	return &pb.GetHealthResponse{
 		Status: pb.HealthStatus_OK,
 	}, nil
 }
-
