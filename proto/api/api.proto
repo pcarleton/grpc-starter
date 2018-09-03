@@ -1,8 +1,8 @@
 syntax = "proto3";
-package cashcoach_api;
+package api;
 
 
-service CashCoachApi {
+service Api {
   rpc GetHealth(GetHealthRequest) returns (GetHealthResponse) {}
 }
 

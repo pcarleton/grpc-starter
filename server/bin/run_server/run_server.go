@@ -1,20 +1,20 @@
 package main
 
 import (
-	"log"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
-	pb "github.com/pcarleton/cashcoach/grpc/proto/api"
-	cc_server "github.com/pcarleton/cashcoach/grpc/server"
 	"flag"
-	"net"
-	"golang.org/x/net/context"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/status"
-	"github.com/pcarleton/cashcoach/api/auth"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/pcarleton/grpc-starter/auth"
+	pb "github.com/pcarleton/grpc-starter/proto/api"
+	server "github.com/pcarleton/grpc-starter/server"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/status"
+	"log"
+	"net"
 	"reflect"
 )
 
@@ -24,12 +24,13 @@ const (
 
 var cert string
 var key string
+var insecure bool
 
 func init() {
 	flag.StringVar(&cert, "cert", "certs/localhost.crt", "Path to the cert file to use for TLS")
 	flag.StringVar(&key, "key", "certs/localhost.key", "TLS cert private key")
+	flag.BoolVar(&insecure, "insecure", false, "Run without TLS")
 }
-
 
 func AuthInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	meta, ok := metadata.FromIncomingContext(ctx)
@@ -79,21 +80,32 @@ func AuthInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServe
 }
 
 func main() {
+  flag.Parse()
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	creds, err := credentials.NewServerTLSFromFile(cert, key)
-	if err != nil {
-    panic(err)
-	}
+  grpcOptions := []grpc.ServerOption{
+    grpc.UnaryInterceptor(AuthInterceptor),
+  }
 
-	s := grpc.NewServer(grpc.Creds(creds), grpc.UnaryInterceptor(AuthInterceptor))
-	apiServer := cc_server.NewServer()
-	pb.RegisterCashCoachApiServer(s, apiServer)
+  if insecure {
+    log.Printf("WARNING: Running without TLS")
+  } else {
+	  creds, err := credentials.NewServerTLSFromFile(cert, key)
+	  if err != nil {
+      panic(err)
+	  }
+    grpcOptions = append(grpcOptions, grpc.Creds(creds))
+  }
+
+	s := grpc.NewServer(grpcOptions...)
+	apiServer := server.NewServer()
+	pb.RegisterApiServer(s, apiServer)
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
+  log.Printf("Starting server on %s", port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

@@ -1,14 +1,14 @@
 package server
 
 import (
-	pb "github.com/pcarleton/grpc-server/proto/api"
+	pb "github.com/pcarleton/grpc-starter/proto/api"
 	"golang.org/x/net/context"
 )
 
 type server struct {
 }
 
-func NewServer() (pb.CashCoachApiServer) {
+func NewServer() (pb.ApiServer) {
 	return &server{}
 }
 

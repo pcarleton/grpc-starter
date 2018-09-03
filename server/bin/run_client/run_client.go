@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/nmrshll/oauth2-noserver"
-	pb "github.com/pcarleton/cashcoach/grpc/proto/api"
+	pb "github.com/pcarleton/grpc-starter/proto/api"
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
@@ -63,7 +63,10 @@ func main() {
 	}
 	fmt.Printf("%+v", conf)
 
-	client := oauth2ns.Authorize(conf)
+	client, err := oauth2ns.AuthenticateUser(conf)
+	if err != nil {
+		panic(err)
+	}
   var conn *grpc.ClientConn
 
   if insecure {
@@ -81,7 +84,7 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewCashCoachApiClient(conn)
+	c := pb.NewApiClient(conn)
 
 	md := metadata.Pairs("token", client.Token.Extra("id_token").(string))
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
