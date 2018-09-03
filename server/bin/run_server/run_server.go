@@ -13,7 +13,6 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
-	"github.com/pcarleton/cashcoach/api/auth"
 	"github.com/dgrijalva/jwt-go"
 	"reflect"
 )

@@ -81,7 +81,7 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewCashCoachApiClient(conn)
+	c := pb.NewApiClient(conn)
 
 	md := metadata.Pairs("token", client.Token.Extra("id_token").(string))
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
