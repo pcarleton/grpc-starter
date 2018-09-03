@@ -1,5 +1,5 @@
 locals {
-  instance_name = "cashcoach-api"
+  instance_name = "grpc-server"
 }
 
 data "template_file" "template_file" {
@@ -12,7 +12,7 @@ data "template_file" "template_file" {
 }
 
 resource "google_compute_address" "api_address" {
-  name = "cc-api-address"
+  name = "api-address"
 }
 
 
