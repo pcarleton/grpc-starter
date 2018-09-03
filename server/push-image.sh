@@ -1,15 +1,6 @@
 #!/usr/bin/env bash
-
-PROJECT_ID="cashcoach-160218"
 TAG=""
-CONTAINER_LABEL="cc_api_server"
-IMAGE="gcr.io/$PROJECT_ID/cc-api-server-image$TAG"
-INSTANCE_NAME="cashcoach-api"
+IMAGE="gcr.io/$PROJECT_ID/$IMAGE_NAME$TAG"
 
-
-docker tag "$CONTAINER_LABEL" "$IMAGE"
+docker tag "$IMAGE_NAME" "$IMAGE"
 docker push "$IMAGE"
-
-# Restart the vm
-gcloud beta compute instances update-container $INSTANCE_NAME \
-      --container-image $IMAGE

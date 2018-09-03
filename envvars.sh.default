@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PROJECT_ID=FIX_ME
-IMAGE_NAME=FIX_ME
+IMAGE_NAME=grpc-api-server-image
 CLIENT_SECRETS_PATH=FIX_ME
 
 
