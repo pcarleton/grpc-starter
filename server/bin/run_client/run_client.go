@@ -63,7 +63,10 @@ func main() {
 	}
 	fmt.Printf("%+v", conf)
 
-	client := oauth2ns.Authorize(conf)
+	client, err := oauth2ns.AuthenticateUser(conf)
+	if err != nil {
+		panic(err)
+	}
   var conn *grpc.ClientConn
 
   if insecure {
