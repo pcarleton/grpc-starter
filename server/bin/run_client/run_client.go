@@ -41,7 +41,8 @@ type googleConfig struct {
 func main() {
 	flag.Parse()
 	//Set up a connection to the server.
-	b, err := ioutil.ReadFile("/home/paul/.cashcoach/client_secret_cashcoach.json")
+  secretsPath := os.Getenv("CLIENT_SECRETS_PATH")
+	b, err := ioutil.ReadFile(secretsPath)
 
 	if err != nil {
 		panic(err)
