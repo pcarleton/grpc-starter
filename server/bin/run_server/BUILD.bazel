@@ -28,8 +28,7 @@ go_binary(
 )
 
 go_image(
-    name = "run_server_image",
-    # srcs = ["run_server.go"],
+    name = "debug",
     embed = [":go_default_library"],
     importpath = "github.com/pcarleton/grpc-starter/server/bin/run_server",
     goarch = "amd64",
@@ -38,4 +37,14 @@ go_image(
     args = [
       "-insecure",
     ]
+)
+
+go_image(
+    name = "prod",
+    embed = [":go_default_library"],
+    importpath = "github.com/pcarleton/grpc-starter/server/bin/run_server",
+    goarch = "amd64",
+    goos = "linux",
+    pure = "on",
+    args = []
 )
